@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "hexlet-code"
+version = "0.1.0"
+description = "project3"
+authors = ["mvarnavskaya"]
+
+packages = [
+  { include = "page_loader" },
+]
+
+[tool.poetry.scripts]
+page-loader = "page_loader.scripts.page_loader:main"
+
+[tool.poetry.dependencies]
+python = "^3.6.8"
+requests = "^2.26.0"
+beautifulsoup4 = "^4.9.3"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.9.2"
+requests = "^2.26.0"
+beautifulsoup4 = "^4.9.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
