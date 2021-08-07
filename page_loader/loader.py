@@ -22,7 +22,7 @@ def download(url, dest_path=os.getcwd()):
         raise AppInternalError(f"Directory {dest_path} doesn't exists.")
 
     try:
-        html = requests.get(url).text
+        html = requests.get(url)
         logger.info(f'received a response {url}')
         html.raise_for_status()
 
