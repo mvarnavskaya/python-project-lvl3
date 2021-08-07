@@ -4,6 +4,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+from page_loader.app_logger import logger
+
 
 class AppInternalError(Exception):
     pass
@@ -11,9 +13,23 @@ class AppInternalError(Exception):
 
 def download(url, dest_path=os.getcwd()):
     """
-    Loads content from source_url
+    Loads content from url
     """
-    html = requests.get(url).text
+    logger.info(f'trying to download {url} to {dest_path}')
+
+    if not os.path.exists(dest_path):
+        logger.error(f"Directory {dest_path} doesn't exists.")
+        raise AppInternalError(f"Directory {dest_path} doesn't exists.")
+
+    try:
+        html = requests.get(url).text
+        logger.info(f'received a response {url}')
+        html.raise_for_status()
+
+    except requests.exceptions.RequestException as e:
+        logger.info(e)
+        raise AppInternalError('Network error.') from e
+
     common_name = parse_url(url)
     html_local = save_images(url, html, dest_path, common_name)
     html_path = save_page(html_local, dest_path, common_name)
