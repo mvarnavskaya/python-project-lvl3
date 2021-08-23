@@ -15,7 +15,7 @@ def download(url, dest_path=os.getcwd()):
     """
     Loads content from url
     """
-    logger.info(f'trying to download {url} to {dest_path}')
+    logger.info(f'download {url} to {dest_path}')
 
     if not os.path.exists(dest_path):
         logger.error(f"Directory {dest_path} doesn't exists.")
@@ -31,6 +31,7 @@ def download(url, dest_path=os.getcwd()):
         raise AppInternalError('Network error.') from e
 
     common_name = parse_url(url)
+
     html_local = save_images(url, html, dest_path, common_name)
     html_path = save_page(html_local, dest_path, common_name)
     return html_path
@@ -63,6 +64,7 @@ def save_images(url: str, html: str, dest_path: str, common_name: str) -> str:
         tag.attrs['src'] = os.path.join(folder_for_locals, local_file_name)
     html_out = soup.prettify(formatter='html5')
     save_elements(os.path.join(dest_path, folder_for_locals), images)
+    logger.info(f'Found {len(img_in_html)} local resource(s) to save.')
     return html_out
 
 
@@ -74,6 +76,9 @@ def save_elements(dest_path, elements):
         os.mkdir(dest_path)
     for name, data in elements.items():
         path_for_locals = os.path.join(dest_path, name)
+        if not os.path.exists(path_for_locals):
+            logger.error(f"Directory {path_for_locals} doesn't exists.")
+            raise AppInternalError(f"Directory {path_for_locals} doesn't exists.")
         with open(path_for_locals, mode='wb') as opened_file:
             opened_file.write(data)
 
