@@ -32,8 +32,12 @@ def download(url, dest_path=os.getcwd()):
 
     common_name = parse_url(url)
 
-    html_local = save_images(url, html, dest_path, common_name)
-    html_path = save_page(html_local, dest_path, common_name)
+    try:
+        html_local = save_images(url, html, dest_path, common_name)
+        html_path = save_page(html_local, dest_path, common_name)
+    except requests.exceptions.RequestException as e:
+        logger.info(e)
+        raise AppInternalError('Network error.') from e
     return html_path
 
 
