@@ -92,8 +92,14 @@ def save_page(html: str, dest_path: str, common_name: str) -> str:
     Saved html to dest_path as common_name
     """
     path_for_page = os.path.join(dest_path, common_name + '.html')
-    with open(path_for_page, mode='w') as opened_file:
-        opened_file.write(html)
+    try:
+        with open(path_for_page, mode='w') as opened_file:
+            opened_file.write(html)
+            logger.info(f'page content written to {path_for_page}')
+    except OSError as e:
+        logger.error(e)
+    raise AppInternalError(
+        'System error! See log for more details.') from e
     return path_for_page
 
 

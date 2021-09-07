@@ -5,10 +5,10 @@ import pytest
 
 import page_loader
 
-URL = 'https://ru.hexlet.io/courses'
-NAME_PREFIX = 'ru-hexlet-io-courses'
-PATHS = [(f'/{NAME_PREFIX}_files/{NAME_PREFIX}-courses.html',
-          './tests/fixtures/expected_courses.html')]
+URL = 'https://site.com/blog/about'
+NAME_PREFIX = 'site-com-blog'
+PATHS = [(f'/{NAME_PREFIX}_files/{NAME_PREFIX}-about.html',
+          './tests/fixtures/expected_page.html')]
     # [(f'/{NAME_PREFIX}_files/{NAME_PREFIX}-assets-application.css',
     #      './tests/fixtures/expected_application.css'),
 
