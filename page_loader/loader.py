@@ -83,8 +83,15 @@ def save_elements(dest_path, elements):
         if not os.path.exists(path_for_locals):
             logger.error(f"Directory {path_for_locals} doesn't exists.")
             raise AppInternalError(f"Directory {path_for_locals} doesn't exists.")
-        with open(path_for_locals, mode='wb') as opened_file:
-            opened_file.write(data)
+        try:
+            with open(path_for_locals, mode='wb') as opened_file:
+                opened_file.write(data)
+        except PermissionError:
+            logger.info(
+                'Permission denied',
+                exc_info=logger.getEffectiveLevel() == logger.DEBUG,
+            )
+            raise
 
 
 def save_page(html: str, dest_path: str, common_name: str) -> str:
