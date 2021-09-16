@@ -62,4 +62,4 @@ def replace_links(url: str, page: str, assets_dir_name: str):
             logger.info(f'link {link} added to assets_links')
 
     logger.info('Function done! Returning assets and page.')
-    return soup.prettify(formatter='html5'), assets_links
+    return soup.prettify(), assets_links
