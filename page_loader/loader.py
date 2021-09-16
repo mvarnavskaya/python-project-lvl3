@@ -109,15 +109,12 @@ def save_page(html: str, dest_path: str, common_name: str) -> str:
             logger.info(f'page content written to {path_for_page}')
     except OSError as e:
         logger.error(e)
-    raise AppInternalError(
-        'System error! See log for more details.') from e
     return path_for_page
 
 
 def parse_url_locals(url: str):
     """
     Remove everything except letters and numbers and .png and .jpg
-    in the url with hyphen
     """
     url = re.sub(r'^/', '', url)
     url = re.sub(r'(?!.png|.jpg)[^a-zA-Z0-9]', '-', url)
