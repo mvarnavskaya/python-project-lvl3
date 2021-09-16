@@ -56,20 +56,24 @@ def save_images(url: str, html: str, dest_path: str, common_name: str) -> str:
     Saves images
     :returns - html with local links
     """
-    soup = BeautifulSoup(html, 'html.parser')
-    images = dict()
-    img_in_html = soup.find_all('img')
-    folder_for_locals = common_name + '_files'
-    for tag in img_in_html:
-        image_url = tag.attrs['src']
-        image_data = requests.get(url + image_url).content
-        local_file_name = parse_url_locals(image_url)
-        images[local_file_name] = image_data
-        tag.attrs['src'] = os.path.join(folder_for_locals, local_file_name)
-    html_out = soup.prettify(formatter='html5')
-    save_elements(os.path.join(dest_path, folder_for_locals), images)
-    logger.info(f'Found {len(img_in_html)} local resource(s) to save.')
-    return html_out
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+        images = dict()
+        img_in_html = soup.find_all('img')
+        folder_for_locals = common_name + '_files'
+        for tag in img_in_html:
+            image_url = tag.attrs['src']
+            image_data = requests.get(url + image_url).content
+            local_file_name = parse_url_locals(image_url)
+            images[local_file_name] = image_data
+            tag.attrs['src'] = os.path.join(folder_for_locals, local_file_name)
+        html_out = soup.prettify(formatter='html5')
+        save_elements(os.path.join(dest_path, folder_for_locals), images)
+        logger.info(f'Found {len(img_in_html)} local resource(s) to save.')
+        return html_out
+    except requests.exceptions.RequestException as e:
+        logger.info(e)
+        raise AppInternalError('Network error.') from e
 
 
 def save_elements(dest_path, elements):

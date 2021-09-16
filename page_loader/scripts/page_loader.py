@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 import sys
-
-from page_loader import cli, loader
+from page_loader import page_loader, cli
 
 
 def main():
     try:
         args = cli.get_parser().parse_args()
-        page_path = loader.download(args.url, args.output)
+        page_path = page_loader.download(args.url, args.output)
         print(page_path)
-    except loader.AppInternalError as e:
+    except page_loader.AppInternalError as e:
         print(e)
         sys.exit(1)
     else:
