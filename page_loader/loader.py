@@ -100,7 +100,7 @@ def save_elements(dest_path, elements):
 
 def save_page(html: str, dest_path: str, common_name: str) -> str:
     """
-    Saved html to dest_path as common_name
+    Сохранить html в файл
     """
     path_for_page = os.path.join(dest_path, common_name + '.html')
     try:
@@ -114,7 +114,7 @@ def save_page(html: str, dest_path: str, common_name: str) -> str:
 
 def parse_url_locals(url: str):
     """
-    Remove everything except letters and numbers and .png and .jpg
+    Удалить из ссылки все, кроме букв и цифр, а также .png и .jpg
     """
     url = re.sub(r'^/', '', url)
     url = re.sub(r'(?!.png|.jpg)[^a-zA-Z0-9]', '-', url)
